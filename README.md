@@ -1,4 +1,4 @@
-### This is the backend for the Virtual Classroom TTS App. 
+# The Virtual Classroom TTS Backend
 
 ## Main Code
 All key logic and processing is stored inside /tts_main directory. The key folders for deployment should be in api.py, root.py, and chat_commands.py. TThe entry point of the backend is the root.py file.
