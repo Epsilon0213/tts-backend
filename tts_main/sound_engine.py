@@ -94,7 +94,7 @@ class soundEngine():
         else:
             play_file = mp3_output_file
     
-        self.load_and_play_synthesis(play_file)
+       # self.load_and_play_synthesis(play_file)
         
         raw_filename = play_file.split('/')
         # ['tts_main', 'tts_output', 'robotic_morgan-freeman20230504225142_94dd9e08c129c785f7f256e82fbe0a30e6d1ae40.wav']
