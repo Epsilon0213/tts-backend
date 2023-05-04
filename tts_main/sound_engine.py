@@ -118,38 +118,45 @@ class soundEngine():
         
     def play_effect(self, content):
 
-        pygame.init()
-        pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
+        # pygame.init()
+        # pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
         # Construct the file path based on the content parameter
-        audio_file = f"tts_main\sounds\effects\{content}.wav"
+        audio_file = f"tts_main/sounds/effects/{content}.wav"
+        raw_filename = audio_file.split('/')
 
-        try:
-            pygame.mixer.music.load(audio_file)
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
-        except FileNotFoundError:
-            print(f"Audio file {audio_file} not found")
+        # try:
+        #     pygame.mixer.music.load(audio_file)
+        #     pygame.mixer.music.play()
+        #     while pygame.mixer.music.get_busy():
+        #         time.sleep(0.1)
+        # except FileNotFoundError:
+        #     print(f"Audio file {audio_file} not found")
+
+        return "", raw_filename[3]
+
 
             
     
     def speak_phrase(self, content):
 
-        pygame.init()
-        pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
+        # pygame.init()
+        # pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
-        # Construct the file path based on the content parameter
-        audio_file = f"tts_main\sounds\phrases\{self.voice}-{content}.wav"
+        # # Construct the file path based on the content parameter
+        audio_file = f"tts_main/sounds/phrases/{self.voice}-{content}.wav"
+        raw_filename = audio_file.split('/')
 
 
-        try:
-            pygame.mixer.music.load(audio_file)
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
-        except FileNotFoundError:
-            print(f"Audio file {audio_file} not found")
+        # try:
+        #     pygame.mixer.music.load(audio_file)
+        #     pygame.mixer.music.play()
+        #     while pygame.mixer.music.get_busy():
+        #         time.sleep(0.1)
+        # except FileNotFoundError:
+        #     print(f"Audio file {audio_file} not found")\
+
+        return "", raw_filename[3]
 
             
 
@@ -160,7 +167,7 @@ class soundEngine():
         pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
         # Construct the file path based on the content parameter
-        audio_file = f"tts_main\sounds\music\{content}.mp3"
+        audio_file = f"tts_main/sounds/music/{content}.mp3"
 
         try:
             pygame.mixer.music.load(audio_file)

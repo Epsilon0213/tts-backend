@@ -69,15 +69,17 @@ class commandBot:
 
     def bot_talk(self, content):
         audio_filename = self.sound_engine.talk(content)
-        return audio_filename
+        return "", audio_filename
 
     
     def bot_play_effect(self, content):
-        self.sound_engine.play_effect(content)
+        sound_file = self.sound_engine.play_effect(content)
+        return "", sound_file
 
 
     def bot_speak_phrase(self, content):
-        self.sound_engine.speak_phrase(content)
+        phrase_file = self.sound_engine.speak_phrase(content)
+        return "", phrase_file
 
     def bot_play_music(self,content):
         self.sound_engine.play_music(content)
