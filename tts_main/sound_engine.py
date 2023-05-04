@@ -9,11 +9,15 @@ import pygame
 import time
 import os
 import sys
-from corentinj_synthesizer import synthesize_speech
+from corentinj_synthesizer import corentinj_tts
 from eleven_synthesizer import eleven_tts
 from scipy.signal import butter, filtfilt
 import librosa
 import time
+import hashlib
+from datetime import datetime
+from playsound import playsound
+
 
 
 
@@ -27,7 +31,6 @@ class soundEngine():
             "david-attenborough": {"pitch": -3, "rate": 140, "voice_id": "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0"},
             "ellen-degeneres": {"pitch": -5, "rate": 180, "voice_id": "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0"},
         }
-        self.index = 1
     
     def voice_select(self, content):
         self.voice = content
@@ -39,19 +42,21 @@ class soundEngine():
 
     def talk(self, content):
 
-        num_words = len(content.split())
-        print(f"Number of words in content: {num_words}")
-        
-        num_characters = len(content)
-        print(f"Number of characters in content: {num_characters}")
+        # Generate a unique hash ID based on the content
+        hash_id = hashlib.sha1(content.encode()).hexdigest()
 
-        start_time = time.time()
+        # Get the current timestamp
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+
+        # Create a unique output filename with the hash ID
+        outdir = "tts_main/tts_output/"
+        output_file = os.path.join(outdir, f"{self.model}_{self.voice}{timestamp}_{hash_id}.wav")
+
 
         if (self.model == "robotic"):
             print("Synthesizing new audio with pyttsx3...")
             engine = pyttsx3.Engine()
-            end_time = time.time()
-            engine.say(content)
+            engine.save_to_file(content, output_file)
             engine.runAndWait()
         
         elif (self.model == "simple_clone"):
@@ -66,50 +71,45 @@ class soundEngine():
             engine.setProperty('voice', voice_properties["voice_id"])
             engine.setProperty('rate', voice_properties["rate"])
 
+            buffer_output_file = os.path.join(outdir, f"{self.model}_buffer_{self.voice}_{hash_id}.wav")
 
-            output_file_name = self.voice.replace('-', '_')
-            output_file = f"tts_main/tts_output/simple_clone/{output_file_name}_tts{self.index}.wav"
-
-            engine.save_to_file(ps_content, output_file)
+            engine.save_to_file(ps_content, buffer_output_file)
             engine.runAndWait()
+            self.lpf(buffer_output_file, output_file)
 
-
-            output_lpf_file_name = output_file_name + "_lpf"
-            output_lpf_file = f"tts_main/tts_output/simple_clone/{output_lpf_file_name}_tts{self.index}.wav"
-
-            self.lpf(output_file, output_lpf_file)
-
-            pygame.init()
-            pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
-
-            try:
-                pygame.mixer.music.load(output_lpf_file)
-                end_time = time.time()
-                pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy():
-                    time.sleep(0.1)
-                pygame.mixer.music.unload()
-            except FileNotFoundError:
-                print(f"Audio file {output_lpf_file} not found")
-
-            self.index += 1
 
 
         elif (self.model == "ai_clone"):
             print("Synthesizing speech with CorentinJ")
-            synthesize_speech(self.voice, content)
-            end_time = time.time()
+            corentinj_tts(self.voice, content, output_file)
 
         elif (self.model == "commercial"):
             print("Synthesizing speech with ElevenLabs")
-            eleven_tts(self.voice, content)
-            end_time = time.time()
+            mp3_output_file = eleven_tts(self.voice, content, output_file)
 
-
-        synthesis_time = end_time - start_time
-        print(f"Speech synthesis took {synthesis_time:.2f} seconds.")
+        # Playing the audio
+        if(self.model != "commercial"):
+            play_file = output_file
+        else:
+            play_file = mp3_output_file
+    
+        self.load_and_play_synthesis(play_file)
 
         
+
+    def load_and_play_synthesis(self, file):
+
+        pygame.init()
+        pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
+
+        try:
+            pygame.mixer.music.load(file)
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy():
+                time.sleep(0.1)
+            pygame.mixer.music.unload()
+        except FileNotFoundError:
+            print(f"Audio file {file} not found")
 
         
     def play_effect(self, content):

@@ -35,7 +35,7 @@ def retrieve_speakers():
 # retrieve_speakers()
 
 
-def eleven_tts(speaker_voice, text):
+def eleven_tts(speaker_voice, text, output_file):
 
     if speaker_voice == "morgan-freeman":
         speaker_id = "mHOgoY94v8zmhqcKNCOH"
@@ -66,22 +66,13 @@ def eleven_tts(speaker_voice, text):
     else:
         print("API call unsucessful.")
         return
+    
+    basename, extension = os.path.splitext(output_file)
+    output_file_new = basename + ".mp3"
 
-    # Output directory
-    outdir = "eleven_synthesis/tts_commercial_history/"
+    save_audio_from_bytes(response.content, output_file_new)
 
-    # Find existing files with the desired naming pattern
-    existing_files = glob.glob(os.path.join(outdir, f"tts_{speaker_voice}_*.mp3"))
-
-    # Determine the next file number for the current speaker voice
-    file_number = max([int(os.path.splitext(os.path.basename(f))[0].split("_")[2]) for f in existing_files], default=0) + 1
-
-    # Create a new filename with the next available number
-    filename = f"tts_{speaker_voice}_{file_number}.mp3"
-    out_dest = os.path.join(outdir, filename)
-
-    save_audio_from_bytes(response.content, out_dest)
-    play_audio(out_dest)
+    return output_file_new
 
 
 
