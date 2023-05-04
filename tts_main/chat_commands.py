@@ -68,12 +68,9 @@ class commandBot:
 
 
     def bot_talk(self, content):
-        self.sound_engine.talk(content)
+        audio_filename = self.sound_engine.talk(content)
+        return audio_filename
 
-        # try:
-        #     self.tts_engine.tts_pytts(content)
-        # except:
-        #     return
     
     def bot_play_effect(self, content):
         self.sound_engine.play_effect(content)
@@ -89,7 +86,7 @@ class commandBot:
         self.sound_engine.stop_music(content)
 
     def bot_question(self, content):
-        return content
+        return content, ""
         
 
 

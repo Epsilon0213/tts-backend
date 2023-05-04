@@ -50,7 +50,8 @@ class soundEngine():
 
         # Create a unique output filename with the hash ID
         outdir = "tts_main/tts_output/"
-        output_file = os.path.join(outdir, f"{self.model}_{self.voice}{timestamp}_{hash_id}.wav")
+        output_filename = f"{self.model}_{self.voice}{timestamp}_{hash_id}.wav"
+        output_file = os.path.join(outdir, output_filename)
 
 
         if (self.model == "robotic"):
@@ -94,7 +95,10 @@ class soundEngine():
             play_file = mp3_output_file
     
         self.load_and_play_synthesis(play_file)
-
+        
+        raw_filename = play_file.split('/')
+        # ['tts_main', 'tts_output', 'robotic_morgan-freeman20230504225142_94dd9e08c129c785f7f256e82fbe0a30e6d1ae40.wav']
+        return "", raw_filename[2]
         
 
     def load_and_play_synthesis(self, file):

@@ -21,8 +21,8 @@ class APIServer:
         data = request.get_json()
         message = data['message']
         print(message)
-        response = self.bot.process_command(message)
-        return jsonify({'response': response})
+        content, filename = self.bot.process_command(message)
+        return jsonify({'content': content,'filename':filename})
     
 
     def run(self):
