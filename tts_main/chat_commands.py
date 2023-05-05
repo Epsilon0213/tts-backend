@@ -62,10 +62,11 @@ class commandBot:
 
     def bot_voice_select(self,content):
         self.sound_engine.voice_select(content)
+        return "", ""
 
     def bot_model_select(self, content):
         self.sound_engine.model_select(content)
-
+        return "", ""
 
     def bot_talk(self, content):
         audio_filename = self.sound_engine.talk(content)
