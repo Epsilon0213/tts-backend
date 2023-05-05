@@ -133,7 +133,7 @@ class soundEngine():
         # except FileNotFoundError:
         #     print(f"Audio file {audio_file} not found")
 
-        return "", raw_filename[3]
+        return "", raw_filename
 
 
             
@@ -156,7 +156,7 @@ class soundEngine():
         # except FileNotFoundError:
         #     print(f"Audio file {audio_file} not found")\
 
-        return "", raw_filename[3]
+        return "", raw_filename
 
             
 

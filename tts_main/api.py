@@ -15,7 +15,12 @@ class APIServer:
 
 
         # Enable CORS to support same origin programs
-        CORS(self.app)
+        # CORS(self.app)
+        CORS(self.app, resource={
+            r"/*":{
+                "origins":"*"
+                }
+                })
 
     def handle_api(self):
         data = request.get_json()
