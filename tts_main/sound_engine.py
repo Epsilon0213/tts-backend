@@ -122,7 +122,7 @@ class soundEngine():
         # pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
         # Construct the file path based on the content parameter
-        audio_file = f"tts_main/sounds/effects/{content}.wav"
+        audio_file = f"tts_main/tts_output/sounds/effects/{content}.wav"
         raw_filename = audio_file.split('/')
 
         # try:
@@ -144,7 +144,7 @@ class soundEngine():
         # pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
         # # Construct the file path based on the content parameter
-        audio_file = f"tts_main/sounds/phrases/{self.voice}-{content}.wav"
+        audio_file = f"tts_main/tts_output/sounds/phrases/{self.voice}-{content}.wav"
         raw_filename = audio_file.split('/')
 
 
@@ -167,7 +167,7 @@ class soundEngine():
         pygame.mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')
 
         # Construct the file path based on the content parameter
-        audio_file = f"tts_main/sounds/music/{content}.mp3"
+        audio_file = f"tts_main/tts_output/sounds/music/{content}.mp3"
 
         try:
             pygame.mixer.music.load(audio_file)
